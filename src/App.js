@@ -4,18 +4,29 @@ import Message from './Message';
 
 class App extends Component {
   state = {
-  mes: false
+  content: null,
+  author: null,
+  }
+
+  async getInfo() {
+
+    const url="https://api.quotable.io/random";
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({content:data.content, author: data.author})
   }
 
   render(){
     const text = "What is your message for today?"
-    console.log()
   return <div className='container'>
      <p>{text}</p>
      <div className='btnCheck'>
-     <button className='btn' onClick={() => this.setState({mes:true})}>Check</button>
+     <button className='btn' onClick={() => this.getInfo()}>Check</button>
      </div>
-     {this.state.mes ? <Message/> : null}
+    <Message 
+     contentProps={this.state.content}
+     authorProps={this.state.author}
+     />
     </div>
 }
 }
